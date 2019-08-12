@@ -1,0 +1,23 @@
+.page--authpage-container {
+	position: relative;
+}
+
+.component--authpage-form {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+	width: 100%;
+}
+
+.form-input{
+	margin-bottom: 1rem;
+}
+
+.component--authpage_title {
+	position: absolute;
+	top: 30%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
