@@ -8,6 +8,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import MoreIcon from '@material-ui/icons/MoreVert';
 
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+
 const useStyles = makeStyles(theme => ({
 	text: {
 	  padding: theme.spacing(2, 2, 0),
@@ -41,6 +44,17 @@ const useStyles = makeStyles(theme => ({
 
 export default function TopAppBar({openMenu}) {
 	const classes = useStyles();
+	//switch to light and dark mode
+
+	const [anchorEl, setAnchorEl] = React.useState(null);
+
+	function handleClick(event) {
+		setAnchorEl(event.currentTarget);
+	}
+
+	function handleClose() {
+		setAnchorEl(null);
+	}
 	return (
 		<AppBar position="fixed" color="primary" className={classes.appBar}>
 			<Toolbar>
@@ -54,9 +68,20 @@ export default function TopAppBar({openMenu}) {
 				<IconButton color="inherit">
 					<SearchIcon />
 				</IconButton>
-				<IconButton edge="end" color="inherit">
+				<IconButton edge="end" color="inherit" onClick={handleClick}>
 					<MoreIcon />
 				</IconButton>
+				<Menu
+					id="simple-menu"
+					anchorEl={anchorEl}
+					keepMounted
+					open={Boolean(anchorEl)}
+					onClose={handleClose}
+				>
+					<MenuItem onClick={handleClose}>Profile</MenuItem>
+					<MenuItem onClick={handleClose}>My account</MenuItem>
+					<MenuItem onClick={handleClose}>Logout</MenuItem>
+				</Menu>
 			</Toolbar>
 		</AppBar>
 	);
