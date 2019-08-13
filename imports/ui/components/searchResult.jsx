@@ -3,12 +3,19 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from "meteor/react-meteor-data";
 
 class SearchResult extends React.Component {
+	constructor(props) {
+		super(props);
+		this.onClick = this.onClick.bind(this);
+	}
+	onClick() {
+		Meteor.call('request.send', this.props.result._id);
+	}
+
 	render() {
 		return (
 			<div>
-				{
-					this.props.loading ? '' : this.props.result._id
-				}
+				{this.props.loading ? '' : this.props.result._id}
+				<button onClick={this.onClick}>Send Friend Request</button>
 			</div>
 		);
 	}

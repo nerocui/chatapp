@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Requests } from './db';
+import { isAuthenticated } from '../util/authUtil';
 
 if (Meteor.isServer) {
 	Meteor.publish('requestsToMe', () => Requests.find({toUserId: this.userId}));

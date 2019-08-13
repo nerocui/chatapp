@@ -68,7 +68,7 @@ class AuthPage extends React.Component {
 
 	render() {
 		if (this.props.loggedIn) {
-			return (<Redirect to='/chatlist'/>);
+			return (<Redirect to='/main'/>);
 		}
 		return (
 			<div className="page--authpage-container page">
