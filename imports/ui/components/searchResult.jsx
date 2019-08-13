@@ -7,20 +7,19 @@ class SearchResult extends React.Component {
 		return (
 			<div>
 				{
-					this.props.results.map(result => <div>{result._id}</div>)
+					this.props.loading ? '' : this.props.result._id
 				}
 			</div>
 		);
 	}
 }
 
-export default withTracker((email) => {
+export default withTracker(({email}) => {
 	const resultsHandle = Meteor.subscribe('searchUsers', email);
 	const loading = !resultsHandle.ready();
-	const results = Meteor.users.find({}).fetch() || [];
-	console.log("Here is the result: ", results);
+	const result = Meteor.users.findOne({ "emails.address" : email });
 	return {
-		results,
+		result,
 		loading,
 	}
 })(SearchResult);
