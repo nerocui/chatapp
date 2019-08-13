@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { isAuthenticated } from '../util/authUtil';
 
 if (Meteor.isServer) {
-	Meteor.publish('searchUsers', (email) => Meteor.users.find({email}));
+	Meteor.publish('searchUsers', (email) => email ? Meteor.users.find({email}) : []);
 	Meteor.publish('myFriends', () => {
 		const user = Meteor.users.findOne({_id: this.userId});
 		return Meteor.users.find({_id: {$in: user.friends}});

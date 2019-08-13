@@ -4,19 +4,45 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import ChatIconOutline from '@material-ui/icons/ChatBubbleOutline';
 import ContactIconOutline from '@material-ui/icons/ContactsOutlined';
+import SearchIconOutline from '@material-ui/icons/SearchOutlined';
 import MomentIconOutline from '@material-ui/icons/ShareOutlined';
 import MeIconOutline from '@material-ui/icons/PersonOutline';
 import ChatIcon from '@material-ui/icons/ChatBubble';
 import ContactIcon from '@material-ui/icons/Contacts';
+import SearchIcon from '@material-ui/icons/Search';
 import MomentIcon from '@material-ui/icons/Share';
 import MeIcon from '@material-ui/icons/Person';
 
 const tabs = [
 	'chatlist',
 	'contacts',
+	'search',
 	'moments',
 	'me',
 ];
+
+const icons = {
+	chatlist: {
+		icon: ChatIcon,
+		iconOutline: ChatIconOutline,
+	},
+	contacts: {
+		icon: ContactIcon,
+		iconOutline: ContactIconOutline,
+	},
+	search: {
+		icon: SearchIcon,
+		iconOutline: SearchIconOutline,
+	},
+	moments: {
+		icon: MomentIcon,
+		iconOutline: MomentIconOutline,
+	},
+	me: {
+		icon: MeIcon,
+		iconOutline: MeIconOutline,
+	}
+}
 
 class BottomTab extends React.Component {
 	constructor(props) {
@@ -38,33 +64,13 @@ class BottomTab extends React.Component {
 	}
 
 	getIconChosen(value) {
-		switch(value) {
-			case 'chatlist':
-				return <ChatIcon />;
-			case 'contacts':
-				return <ContactIcon />;
-			case 'moments':
-				return <MomentIcon />;
-			case 'me':
-				return <MeIcon />;
-			default:
-				return <ChatIcon />;
-		}
+		const Icon = icons[value].icon;
+		return <Icon />;
 	}
 
 	getIconOutline(value) {
-		switch(value) {
-			case 'chatlist':
-				return <ChatIconOutline />;
-			case 'contacts':
-				return <ContactIconOutline />;
-			case 'moments':
-				return <MomentIconOutline />;
-			case 'me':
-				return <MeIconOutline />;
-			default:
-				return <ChatIconOutline />;
-		}
+		const Icon = icons[value].iconOutline;
+		return <Icon />;
 	}
 
 	getIcon(value) {
@@ -81,8 +87,9 @@ class BottomTab extends React.Component {
 				<Tabs value={this.state.tab} onChange={this.handleChange} variant="fullWidth">
 					<Tab label="Chats" icon={this.getIcon('chatlist')} value={tabs[0]} />
 					<Tab label="Contacts" icon={this.getIcon('contacts')} value={tabs[1]} />
-					<Tab label="Moments" icon={this.getIcon('moments')} value={tabs[2]} />
-					<Tab label="Me" icon={this.getIcon('me')} value={tabs[3]} />
+					<Tab label="Search" icon={this.getIcon('search')} value={tabs[2]} />
+					<Tab label="Moments" icon={this.getIcon('moments')} value={tabs[3]} />
+					<Tab label="Me" icon={this.getIcon('me')} value={tabs[4]} />
 				</Tabs>
 			</div>
 		);
