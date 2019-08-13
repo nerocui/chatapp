@@ -1,0 +1,13 @@
+.component--main-page__container {
+	@media (max-width: 600px) {
+		height: calc(100vh - 56px);
+	}
+	
+	@media (min-width: 600px) {
+		height: calc(100vh - 64px);
+	}
+	
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+}
