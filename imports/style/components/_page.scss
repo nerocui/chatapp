@@ -3,3 +3,17 @@
 	height: 100vh;
 	position: relative;
 }
+
+.component--page__container {
+	@media (max-width: 600px) {
+		height: calc(100vh - 56px - .5rem);
+	}
+	
+	@media (min-width: 600px) {
+		height: calc(100vh - 64px - .5rem);
+	}
+	
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+}

@@ -1,9 +1,9 @@
 import React from 'react';
-import Page from './Page';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import SearchResult from '../components/searchResult';
+import SearchBar from '../components/searchBar';
 
 const Input = withStyles({
 	root: {
@@ -38,34 +38,20 @@ class SearchPage extends React.Component {
 
 	renderSearchResult() {
 		if (this.state.search) {
-			console.log("rendering result");
 			return (
 				<SearchResult email={this.state.term} />
 			);
 		}
-		console.log('not rending result');
 	}
 
 	render() {
 		return (
-			<Page background="#4f6572">
-				<form onSubmit={this.onSubmit}>
-					<Input
-						label="Search by Email"
-						value={this.state.email}
-						onChange={this.onEmailChange}
-						variant="outlined"
-					/>
-					<Button
-						variant="contained"
-						color="primary"
-						type="submit"
-					>
-						Search
-					</Button>
-				</form>
-				{this.renderSearchResult()}
-			</Page>
+			<div className='page'>
+				<SearchBar email={this.state.email} onChange={this.onEmailChange} onSubmit={this.onSubmit} />
+				<div className='component--page__container'>
+					{this.renderSearchResult()}
+				</div>
+			</div>
 		);
 	}
 }

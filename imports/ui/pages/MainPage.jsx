@@ -30,7 +30,7 @@ class MainPage extends React.Component {
 			<div className='page'>
 				<AppBar openMenu={this.openSideBar}/>
 				<SideBar open={this.state.sideBarOpen} closeSideBar={this.closeSideBar} />
-				<div className='component--main-page__container'>chat list page</div>
+				<div className='component--page__container'>chat list page</div>
 			</div>
 		);
 	}
