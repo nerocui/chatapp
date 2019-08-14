@@ -9,7 +9,7 @@ if (Meteor.isServer) {
 		return Meteor.users.find({ "emails.address" : email });
 	});
 	Meteor.publish('myFriends', () => {
-		const user = Meteor.users.findOne({_id: this.userId});
+		const user = Meteor.users.findOne({_id: Meteor.userId()});
 		if (!user) {
 			return [];
 		}

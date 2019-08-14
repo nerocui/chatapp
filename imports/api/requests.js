@@ -3,8 +3,8 @@ import { Requests } from './db';
 import { isAuthenticated } from '../util/authUtil';
 
 if (Meteor.isServer) {
-	Meteor.publish('requestsToMe', () => Requests.find({toUserId: this.userId}));
-	Meteor.publish('requestsFromMe', () => Requests.find({fromUserId: this.userId}));
+	Meteor.publish('requestsToMe', () => Requests.find({toUserId: Meteor.userId()}));
+	Meteor.publish('requestsFromMe', () => Requests.find({fromUserId: Meteor.userId()}));
 }
 
 Meteor.methods({

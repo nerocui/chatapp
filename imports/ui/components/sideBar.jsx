@@ -1,6 +1,6 @@
 import React from 'react';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import Badge from '@material-ui/core/Badge';
@@ -22,7 +22,7 @@ const useStyles = makeStyles({
 	},
 });
 
-const devide = 4;
+const devide = 3;
 
 const sideBarConfig = [
 	{
@@ -41,11 +41,6 @@ const sideBarConfig = [
 		Icon: StarBorder
 	},
 	{
-		label: 'Requests',
-		route: '/requests',
-		Icon: NotificationIconOutline
-	},
-	{
 		label: 'Profile',
 		route: '/me',
 		Icon: PersonOutline
@@ -55,9 +50,22 @@ const sideBarConfig = [
 		route: '/settings',
 		Icon: SettingsOutlined
 	},
-]
+];
+
+const requestConfig = {
+	label: 'Requests',
+	route: '/requests',
+	Icon: NotificationIconOutline
+};
+
+const StyledBadge = withStyles(theme => ({
+	badge: {
+	  top: '50%',
+	  right: '-1rem',
+	},
+}))(Badge);
  
-export default function SideBar({open, closeSideBar}) {
+export default function SideBar({open, requests = 0, closeSideBar}) {
 	const classes = useStyles();
 	const sideList = () => (
 		<div
@@ -70,6 +78,9 @@ export default function SideBar({open, closeSideBar}) {
 			{sideBarConfig.slice(0, devide).map(props => (
 				<ListItemLink {...props}/>
 			))}
+			<StyledBadge color="secondary" badgeContent={requests} invisible={requests===0}>
+				<ListItemLink {...requestConfig}/>
+			</StyledBadge>
 		  </List>
 		  <Divider />
 		  <List>

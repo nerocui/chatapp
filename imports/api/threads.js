@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Threads } from './db';
 
 if (Meteor.isServer) {
-	Meteor.publish('myThreads', () => Threads.find({senderId: this.userId}));
+	Meteor.publish('myThreads', () => Threads.find({senderId: Meteor.userId()}));
 }
 
 Meteor.methods({

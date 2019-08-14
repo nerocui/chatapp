@@ -6,7 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AddIcon from '@material-ui/icons/Add';
-
+import Typography from '@material-ui/core/Typography';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuItemLink from '../components/MenuItemLink';
@@ -22,12 +22,15 @@ const useStyles = makeStyles(theme => ({
 		top: 0,
 		bottom: 'auto',
 	},
+	title: {
+		flexGrow: 1,
+	},
 	grow: {
-	  flexGrow: 1,
+	  	flexGrow: 1,
 	},
 }));
 
-export default function TopAppBar({openMenu}) {
+export default function TopAppBar({requests = 0, openMenu}) {
 	const classes = useStyles();
 	//switch to light and dark mode
 
@@ -44,10 +47,13 @@ export default function TopAppBar({openMenu}) {
 		<AppBar position="fixed" color="default" className={classes.appBar}>
 			<Toolbar>
 				<IconButton edge="start" color="inherit" aria-label="open drawer" onClick={openMenu}>
-					<Badge color="secondary" variant="dot">
+					<Badge color="secondary" invisible={requests===0} variant="dot">
 						<MenuIcon />
 					</Badge>
 				</IconButton>
+				<Typography variant="h6" className={classes.title}>
+					YouChat
+				</Typography>
 				<div className={classes.grow} />
 				<IconButton color="inherit" onClick={handleAddButtonClick}>
 					<AddIcon />
