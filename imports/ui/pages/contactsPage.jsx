@@ -12,7 +12,7 @@ class ContactsPage extends React.Component {
 				<BackAppBar route='/main' label='Contacts'/>
 				<div className='component--page__container'>
 					{this.props.friends.map(friend => (
-							<ContactCard {...friend}/>
+							<ContactCard {...friend} key={friend._id}/>
 						))}
 				</div>
 			</div>

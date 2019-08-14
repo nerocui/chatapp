@@ -5,7 +5,7 @@ import { Meteor } from "meteor/meteor";
 import { Accounts } from 'meteor/accounts-base';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 const Input = withStyles({
 	root: {

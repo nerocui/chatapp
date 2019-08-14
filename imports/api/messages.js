@@ -1,21 +1,21 @@
 import { Meteor } from 'meteor/meteor';
-import { Messages, Threads } from './db';
+import { Messages } from './db';
+import { isAuthenticated } from '../util/authUtil';
 
 if (Meteor.isServer) {
 	Meteor.publish('messageByThread', (threadId) => Messages.find({threadId}));
 }
 
 Meteor.methods({
-	'messages.send'(receiverId, content) {
+	'messages.send'(threadId, receiverId, content) {
 		if (!isAuthenticated()) {
 			throw new Meteor.Error("Not auth");
 		}
-		const thread = Threads.findOne({receiverId, senderId: this.userId});
 		let errCode;
 		const _id =  Messages.insert({
 			senderId: this.userId,
 			receiverId,
-			threadId: thread._id,
+			threadId,
 			content,
 			read: false,
 			receivedAt: new Date(Date.now()),

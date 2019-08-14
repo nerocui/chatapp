@@ -1,9 +1,15 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
+import { Link } from 'react-router-dom';
 import { withTracker } from "meteor/react-meteor-data";
 import { Threads, Requests } from '../../api/db';
 import AppBar from '../components/appBar';
 import SideBar from '../components/sideBar';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ArrowRightIcon from '@material-ui/icons/ArrowForwardIos';
+import ListItemText from '@material-ui/core/ListItemText';
 
 
 class MainPage extends React.Component {
@@ -31,7 +37,20 @@ class MainPage extends React.Component {
 			<div className='page'>
 				<AppBar openMenu={this.openSideBar} requests={this.props.requestsNum}/>
 				<SideBar open={this.state.sideBarOpen} requests={this.props.requestsNum} closeSideBar={this.closeSideBar} />
-				<div className='component--page__container'>chat list page</div>
+				<div className='component--page__container'>
+					<List>
+						{this.props.loading ? '' : this.props.threads.map(thread => (
+							<Link to={`/chatthread?threadId=${thread._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+								<ListItem button>
+									<ListItemText primary={thread._id} />
+									<ListItemIcon>
+										<ArrowRightIcon />
+									</ListItemIcon>
+								</ListItem>
+							</Link>
+						))}
+					</List>
+				</div>
 			</div>
 		);
 	}

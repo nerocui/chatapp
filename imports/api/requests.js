@@ -25,6 +25,7 @@ Meteor.methods({
 		Requests.remove({_id});
 		Meteor.call('users.addFriend', request.fromUserId, request.toUserId);
 		Meteor.call('users.addFriend', request.toUserId, request.fromUserId);
+		Meteor.call('threads.insert', [request.fromUserId, request.toUserId]);
 	},
 	'request.decline'(_id) {
 		if (!isAuthenticated()) {

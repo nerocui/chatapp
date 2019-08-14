@@ -28,6 +28,7 @@ class RequestPage extends React.Component {
 				<div className='component--page__container'>
 					{this.props.loading ? '' : this.props.requests.map(request => (
 						<RequestItem
+							key={request._id}
 							userId={request.fromUserId}
 							handleDecline={() => this.onDecline(request)}
 							handleAccept={() => this.onApprove(request)}
