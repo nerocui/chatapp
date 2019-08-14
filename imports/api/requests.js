@@ -25,5 +25,11 @@ Meteor.methods({
 		Requests.remove({_id});
 		Meteor.call('users.addFriend', request.fromUserId, request.toUserId);
 		Meteor.call('users.addFriend', request.toUserId, request.fromUserId);
+	},
+	'request.decline'(_id) {
+		if (!isAuthenticated()) {
+			throw new Meteor.Error("Not auth");
+		}
+		Requests.remove({_id});
 	}
 });

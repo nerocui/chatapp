@@ -8,6 +8,12 @@ if (Meteor.isServer) {
 		}
 		return Meteor.users.find({ "emails.address" : email });
 	});
+	Meteor.publish('searchUserById', (_id) => {
+		if (!_id) {
+			return [];
+		}
+		return Meteor.users.find({ _id });
+	});
 	Meteor.publish('myFriends', () => {
 		const user = Meteor.users.findOne({_id: Meteor.userId()});
 		if (!user) {
@@ -23,9 +29,10 @@ Meteor.methods({
 			throw new Meteor.Error("Not auth");
 		}
 		const user = Meteor.users.findOne({_id: fromUserId});
+		const friends = user.friends || [];
 		Meteor.users.update(fromUserId, {
 			$set: {
-				friends: [...user.friends, toUserId]
+				friends: [...friends, toUserId]
 			}
 		})
 	},

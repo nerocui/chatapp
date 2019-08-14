@@ -9,6 +9,7 @@ import MePage from '../pages/mePage';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import PrivateRoute from './PrivateRoute';
 import MainPage from '../pages/MainPage';
+import RequestPage from '../pages/RequestPage';
 
 const routes = (
 	<Router>
@@ -20,6 +21,7 @@ const routes = (
 					<PrivateRoute exact path='/main' component={MainPage} />
 					<PrivateRoute exact path='/chatthread' component={ChatThreadPage} />
 					<PrivateRoute exact path='/contacts' component={ContactsListPage} />
+					<PrivateRoute exact path='/requests' component={RequestPage} />
 					<PrivateRoute exact path='/search' component={SearchPage} />
 					<PrivateRoute exact path='/moments' component={MomentsPage} />
 					<PrivateRoute exact path='/me' component={MePage} />
