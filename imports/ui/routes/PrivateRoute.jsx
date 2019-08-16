@@ -12,8 +12,10 @@ class PrivateRoute extends Component {
 		const COMPONENT = this.props.component;
 		console.log("doing auth");
 		if (this.props.loggedIn) {
+			console.log('returning component: ', COMPONENT);
 			return <COMPONENT />;
 		} else {
+			console.log('redirecting to /');
 			return <Redirect to="/" />;
 		}
 	}

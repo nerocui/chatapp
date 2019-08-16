@@ -1,8 +1,6 @@
 import React from 'react';
-import { Meteor } from 'meteor/meteor';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { withTracker } from "meteor/react-meteor-data";
-import { Threads, Requests } from '../../api/db';
 import AppBar from '../components/appBar';
 import SideBar from '../components/sideBar';
 import List from '@material-ui/core/List';
@@ -35,12 +33,16 @@ class MainPage extends React.Component {
 		console.log("requests: ", this.props.requests);
 		return (
 			<div className='page'>
-				<AppBar openMenu={this.openSideBar} requests={this.props.requestsNum}/>
-				<SideBar open={this.state.sideBarOpen} requests={this.props.requestsNum} closeSideBar={this.closeSideBar} />
+				<AppBar openMenu={this.openSideBar} requests={this.props.requests.length}/>
+				<SideBar open={this.state.sideBarOpen} requests={this.props.requests.length} closeSideBar={this.closeSideBar} />
 				<div className='component--page__container'>
 					<List>
-						{this.props.loading ? '' : this.props.threads.map(thread => (
-							<Link to={`/chatthread?threadId=${thread._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+						{this.props.threads.map(thread => (
+							<Link
+								to={`/chatthread?threadId=${thread._id}`}
+								style={{ textDecoration: 'none', color: 'inherit' }}
+								key={thread._id}
+							>
 								<ListItem button>
 									<ListItemText primary={thread._id} />
 									<ListItemIcon>
@@ -56,20 +58,11 @@ class MainPage extends React.Component {
 	}
 }
 
-export default withTracker(() => {
-	const threadsHandle = Meteor.subscribe('myThreads');
-	const loading = !threadsHandle.ready();
-	const threads = Threads.find({}).fetch() || [];
-
-	const requestsHandle = Meteor.subscribe('requestsToMe');
-	const requestLoading = !requestsHandle.ready();
-	const requests = Requests.find({}).fetch() || [];
-
+function mapStateToProps(state) {
 	return {
-		threads,
-		loading,
-		requestLoading,
-		requests,
-		requestsNum: requests.length,
+		threads: state.threadState.threads,
+		requests: state.requestState.requests,
 	};
-})(MainPage);
+}
+
+export default connect(mapStateToProps)(MainPage);

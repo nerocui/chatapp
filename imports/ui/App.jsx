@@ -3,7 +3,13 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { withTracker } from "meteor/react-meteor-data"
 import { Meteor } from 'meteor/meteor';
 import { connect } from 'react-redux';
-import { setAuthInfo, logout } from '../action';
+import {
+	setAuthInfo,
+	logout,
+	setContacts,
+	setRequests,
+	setThreads,
+} from '../action';
 import * as db from '../api/db';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import PrivateRoute from './routes/PrivateRoute';
@@ -21,7 +27,28 @@ import LoginPage from "./pages/LoginPage";
 class App extends Component {
 	componentDidMount() {
 		if (this.props.loggedIn) {
+			console.log('did mount');
 			this.props.setAuthInfo(this.props.user);
+			if (!this.props.loading) {
+				this.props.setContacts(this.props.contacts);
+				this.props.setThreads(this.props.threads);
+				this.props.setRequests(this.props.requests);
+			}
+		} else {
+			this.props.logout();
+		}
+	}
+
+	componentDidUpdate() {
+		if (this.props.loggedIn) {
+			console.log('did update');
+			this.props.setAuthInfo(this.props.user);
+			if (!this.props.loading) {
+				this.props.setContacts(this.props.contacts);
+				this.props.setThreads(this.props.threads);
+				this.props.setRequests(this.props.requests);
+			}
+			console.log('finished update');
 		} else {
 			this.props.logout();
 		}
@@ -35,14 +62,14 @@ class App extends Component {
 					<div>
 						<CssBaseline />
 						<Switch>
-							<PrivateRoute exact path='/main' component={MainPage} />
-							<PrivateRoute exact path='/chatthread' component={ChatThreadPage} />
-							<PrivateRoute exact path='/contacts' component={ContactsListPage} />
-							<PrivateRoute exact path='/requests' component={RequestPage} />
-							<PrivateRoute exact path='/search' component={SearchPage} />
-							<PrivateRoute exact path='/moments' component={MomentsPage} />
-							<PrivateRoute exact path='/me' component={MePage} />
-							<PrivateRoute component={MainPage} />
+							<Route exact path='/main' component={MainPage} />
+							<Route exact path='/chatthread' component={ChatThreadPage} />
+							<Route exact path='/contacts' component={ContactsListPage} />
+							<Route exact path='/requests' component={RequestPage} />
+							<Route exact path='/search' component={SearchPage} />
+							<Route exact path='/moments' component={MomentsPage} />
+							<Route exact path='/me' component={MePage} />
+							<Route component={MainPage} />
 						</Switch>
 					</div>
 				</Router>
@@ -54,6 +81,7 @@ class App extends Component {
 					<Switch>
 						<Route exact path='/' component={LoginPage} />
 						<Route exact path='/signup' component={SignupPage} />
+						<Route component={LoginPage} />
 					</Switch>
 				</Router>
 			);
@@ -102,6 +130,9 @@ const AppWithTracker = withTracker(() => {
 function mapDispatchToProps(dispatch) {
 	return {
 		setAuthInfo: user => dispatch(setAuthInfo(user)),
+		setContacts: contacts => dispatch(setContacts(contacts)),
+		setThreads: threads => dispatch(setThreads(threads)),
+		setRequests: requests => dispatch(setRequests(requests)),
 		logout: () => dispatch(logout()),
 	};
 }
