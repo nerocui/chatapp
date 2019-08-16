@@ -1,7 +1,5 @@
 import React from 'react';
-import Page from './Page';
-import { Meteor } from 'meteor/meteor';
-import { withTracker } from "meteor/react-meteor-data";
+import { connect } from 'react-redux';
 import BackAppBar from '../components/backAppBar';
 import ContactCard from '../components/contactCard';
 
@@ -11,8 +9,8 @@ class ContactsPage extends React.Component {
 			<div className='page'>
 				<BackAppBar route='/main' label='Contacts'/>
 				<div className='component--page__container'>
-					{this.props.friends.map(friend => (
-							<ContactCard {...friend} key={friend._id}/>
+					{this.props.contacts.map(contact => (
+							<ContactCard {...contact} key={contact._id}/>
 						))}
 				</div>
 			</div>
@@ -20,12 +18,10 @@ class ContactsPage extends React.Component {
 	}
 }
 
-export default withTracker(() => {
-	const friendsHandle = Meteor.subscribe('myFriends');
-	const loading = !friendsHandle.ready();
-	const friends = Meteor.users.find({}).fetch().filter(user => user._id !== Meteor.userId()) || [];
+function mapStateToProps(state) {
 	return {
-		friends,
-		loading,
+		contacts: state.contactState.contacts,
 	};
-})(ContactsPage);
+}
+
+export default connect(mapStateToProps)(ContactsPage);

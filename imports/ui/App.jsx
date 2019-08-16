@@ -12,7 +12,6 @@ import {
 } from '../action';
 import * as db from '../api/db';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import PrivateRoute from './routes/PrivateRoute';
 
 import ChatThreadPage from './pages/chatThreadPage';
 import MomentsPage from './pages/momentsPage';

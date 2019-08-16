@@ -4,6 +4,7 @@ import {
 	SET_CONTACTS,
 	SET_REQUESTS,
 	SET_THREADS,
+	CHAT,
 } from './type';
 
 export function setAuthInfo(user) {
@@ -31,6 +32,13 @@ export function setRequests(requests) {
 	return {
 		type: SET_REQUESTS,
 		payload: requests,
+	};
+}
+
+export function chat(thread) {
+	return {
+		type: CHAT,
+		payload: thread,
 	};
 }
 

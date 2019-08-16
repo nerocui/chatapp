@@ -7,14 +7,13 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-	'messages.send'(threadId, receiverId, content) {
+	'messages.send'(threadId, content) {
 		if (!isAuthenticated()) {
 			throw new Meteor.Error("Not auth");
 		}
 		let errCode;
 		const _id =  Messages.insert({
 			senderId: this.userId,
-			receiverId,
 			threadId,
 			content,
 			read: false,

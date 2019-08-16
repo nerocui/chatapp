@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import { chat } from '../../action';
 import AppBar from '../components/appBar';
 import SideBar from '../components/sideBar';
 import List from '@material-ui/core/List';
@@ -18,6 +19,7 @@ class MainPage extends React.Component {
 		}
 		this.openSideBar = this.openSideBar.bind(this);
 		this.closeSideBar = this.closeSideBar.bind(this);
+		this.openThread = this.openThread.bind(this);
 	}
 
 	openSideBar() {
@@ -29,28 +31,39 @@ class MainPage extends React.Component {
 		this.setState({sideBarOpen: false});
 	}
 
+	openThread(thread) {
+		this.props.chat(thread);
+		console.log("setting thread data: ", thread);
+		this.props.history.push(`/chatthread?threadId=${thread._id}`);
+	}
+
+	getThreadName(thread) {
+		const {users} = thread;
+		const contacts = this.props.contacts.filter(contact => users.includes(contact._id));
+		return contacts.length > 1 ? `Group of ${contacts.length.toString()}` : `${contacts[0].first_name} ${contacts[0].last_name}`;
+	}
+
 	render() {
 		console.log("requests: ", this.props.requests);
+		const requestNum = this.props.requests ? this.props.requests.length : 0;
+
 		return (
 			<div className='page'>
-				<AppBar openMenu={this.openSideBar} requests={this.props.requests.length}/>
-				<SideBar open={this.state.sideBarOpen} requests={this.props.requests.length} closeSideBar={this.closeSideBar} />
+				<AppBar openMenu={this.openSideBar} requests={requestNum}/>
+				<SideBar open={this.state.sideBarOpen} requests={requestNum} closeSideBar={this.closeSideBar} />
 				<div className='component--page__container'>
 					<List>
-						{this.props.threads.map(thread => (
-							<Link
-								to={`/chatthread?threadId=${thread._id}`}
-								style={{ textDecoration: 'none', color: 'inherit' }}
-								key={thread._id}
-							>
-								<ListItem button>
-									<ListItemText primary={thread._id} />
+						{this.props.threads.map(thread => {
+							const threadData = Object.assign({}, thread, {name: this.getThreadName(thread)});
+							return (
+								<ListItem button key={thread._id} onClick={() => this.openThread(threadData)}>
+									<ListItemText primary={threadData.name} />
 									<ListItemIcon>
 										<ArrowRightIcon />
 									</ListItemIcon>
 								</ListItem>
-							</Link>
-						))}
+							);
+						})}
 					</List>
 				</div>
 			</div>
@@ -58,11 +71,22 @@ class MainPage extends React.Component {
 	}
 }
 
+function mapDispatchToProps(dispatch) {
+	return {
+		chat: thread => dispatch(chat(thread)),
+	};
+}
+
 function mapStateToProps(state) {
 	return {
 		threads: state.threadState.threads,
 		requests: state.requestState.requests,
+		contacts: state.contactState.contacts,
 	};
 }
 
-export default connect(mapStateToProps)(MainPage);
+const ConnectedMainPage = connect(mapStateToProps, mapDispatchToProps)(MainPage);
+
+export default withRouter(({ history }) => (
+	<ConnectedMainPage history={history} />
+));
