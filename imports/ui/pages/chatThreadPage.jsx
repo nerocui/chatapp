@@ -28,7 +28,7 @@ class ThreadPage extends React.Component {
 	render() {
 		return (
 			<div className='page'>
-				<BackAppBar route='/main' label={this.props.threadId} />
+				<BackAppBar route='/main' label={this.props.loading ? 'loading...' : this.props.thread._id} />
 				<div className='component--page__container'>
 					{this.props.loading ? '' : this.props.messages.map(message => <p>{`${message.senderId}: ${message.content}`}</p>)}
 					<div>

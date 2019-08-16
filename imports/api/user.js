@@ -21,7 +21,29 @@ if (Meteor.isServer) {
 		}
 		return Meteor.users.find({_id: {$in: user.friends}});
 	});
+	Meteor.users.deny({
+		update() { return true; }
+	});
 }
+
+Accounts.onCreateUser((options, user) => {
+	console.log("[backend onCreateUser]", options, user);
+	const { first_name, last_name, profile_pic } = options;
+	user.initials = first_name[0].toUpperCase() + last_name[0].toUpperCase();
+	user.first_name = first_name;
+	user.last_name = last_name;
+	user.profile_pic = profile_pic;
+	let username = first_name + last_name[0];
+	let accepted = !Meteor.users.findOne({username});
+	let count = 1;
+	while (!accepted) {
+		username = username + count.toString();
+		accepted = !Meteor.users.findOne({username});
+		count += 1;
+	}
+	user.username = username;
+	return user;
+});
 
 Meteor.methods({
 	'users.addFriend'(fromUserId, toUserId) {

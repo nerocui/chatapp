@@ -1,34 +1,18 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
-import AuthPage from "../pages/authPage";
-import ChatThreadPage from '../pages/chatThreadPage';
-import MomentsPage from '../pages/momentsPage';
-import ContactsListPage from '../pages/contactsPage';
-import SearchPage from '../pages/searchPage';
-import MePage from '../pages/mePage';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import PrivateRoute from './PrivateRoute';
-import MainPage from '../pages/MainPage';
-import RequestPage from '../pages/RequestPage';
+import { BrowserRouter as Router } from "react-router-dom";
+import App from '../App';
+import rootReducer from "../../reducer/index";
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+
+const store = createStore(rootReducer);
 
 const routes = (
-	<Router>
-		<Switch>
-			<Route exact path='/' component={AuthPage }/>
-			<div>
-				<CssBaseline />
-				<Switch>
-					<PrivateRoute exact path='/main' component={MainPage} />
-					<PrivateRoute exact path='/chatthread' component={ChatThreadPage} />
-					<PrivateRoute exact path='/contacts' component={ContactsListPage} />
-					<PrivateRoute exact path='/requests' component={RequestPage} />
-					<PrivateRoute exact path='/search' component={SearchPage} />
-					<PrivateRoute exact path='/moments' component={MomentsPage} />
-					<PrivateRoute exact path='/me' component={MePage} />
-				</Switch>
-			</div>
-		</Switch>
-	</Router>
-)
+	<Provider store={store}>
+		<Router>
+			<App />
+		</Router>
+	</Provider>
+);
 
 export default routes;

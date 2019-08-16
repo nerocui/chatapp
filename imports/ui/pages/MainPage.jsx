@@ -64,6 +64,7 @@ export default withTracker(() => {
 	const requestsHandle = Meteor.subscribe('requestsToMe');
 	const requestLoading = !requestsHandle.ready();
 	const requests = Requests.find({}).fetch() || [];
+
 	return {
 		threads,
 		loading,

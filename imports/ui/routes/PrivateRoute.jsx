@@ -1,8 +1,8 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux';
 import { Route, Redirect } from "react-router-dom";
-import { isAuthenticated } from "../../util/authUtil";
 
-export default class PrivateRoute extends Component {
+class PrivateRoute extends Component {
 	constructor(props) {
 		super(props);
 		this.renderRoute = this.renderRoute.bind(this);
@@ -11,9 +11,11 @@ export default class PrivateRoute extends Component {
 	renderRoute() {
 		const COMPONENT = this.props.component;
 		console.log("doing auth");
-		return (
-			isAuthenticated() ? <COMPONENT /> : <Redirect to="/" />
-		);
+		if (this.props.loggedIn) {
+			return <COMPONENT />;
+		} else {
+			return <Redirect to="/" />;
+		}
 	}
 
 	render() {
@@ -23,3 +25,13 @@ export default class PrivateRoute extends Component {
 		);
 	}
 }
+
+
+function mapStateToProps(state) {
+	console.log('mapping state to props', state);
+	return {
+		loggedIn: state.auth.loggedIn
+	};
+}
+
+export default connect(mapStateToProps)(PrivateRoute);
