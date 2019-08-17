@@ -1,0 +1,47 @@
+.component--thread__input-container {
+	position: absolute;
+	bottom: 0;
+	padding: $body-padding;
+	width: calc(100% - 2*#{$body-padding});
+	margin: 0;
+	.MuiFormControl-root {
+		width: calc(100% - 2*#{$body-padding} - 48px);
+		.MuiInputBase-root {
+			width: 100%;
+			input {
+				width: 100%;
+			}
+		}
+	}
+	button {
+		position: absolute;
+		right: $body-padding;
+		bottom: $body-padding;
+	}
+}
+
+.component--thread__chat {
+	.element--thread__chat-float {
+		float: left;
+		margin-bottom: 1rem;
+	}
+	p.element--thread__chat-float {
+		float: left;
+		margin-left: .5rem;
+		background-color: rgb(94, 206, 94);
+		color: rgb(0, 0, 0);
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 1.1rem;
+		padding: .5rem;
+		border-radius: 1rem;
+		min-width: 3rem;
+		text-align: center;
+	}
+	.element--thread__chat-float.right {
+		float: right;
+	}
+	p.element--thread__chat-float.right {
+		margin-right: .5rem;
+	}
+	clear: both;
+}

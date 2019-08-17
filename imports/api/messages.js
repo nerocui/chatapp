@@ -15,6 +15,7 @@ Meteor.methods({
 		const _id =  Messages.insert({
 			senderId: this.userId,
 			threadId,
+			readBy: [],
 			content,
 			read: false,
 			receivedAt: new Date(Date.now()),

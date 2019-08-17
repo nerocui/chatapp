@@ -40,7 +40,7 @@ class MainPage extends React.Component {
 	getThreadName(thread) {
 		const {users} = thread;
 		const contacts = this.props.contacts.filter(contact => users.includes(contact._id));
-		return contacts.length > 1 ? `Group of ${contacts.length.toString()}` : `${contacts[0].first_name} ${contacts[0].last_name}`;
+		return contacts.length > 2 ? `Group of ${contacts.length.toString()}` : `${contacts[0].first_name} ${contacts[0].last_name}`;
 	}
 
 	render() {

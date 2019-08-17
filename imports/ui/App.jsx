@@ -105,7 +105,7 @@ const AppWithTracker = withTracker(() => {
 	if (Meteor.userId()) {
 		contactsHandle = Meteor.subscribe('myFriends');
 		contactsLoading = !contactsHandle.ready();
-		contacts = Meteor.users.find({}).fetch().filter(user => user._id !== Meteor.userId()) || [];
+		contacts = Meteor.users.find({}).fetch() || [];
 
 		threadsHandle = Meteor.subscribe('myThreads');
 		threadsLoading = !threadsHandle.ready();

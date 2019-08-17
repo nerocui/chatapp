@@ -19,7 +19,8 @@ if (Meteor.isServer) {
 		if (!user) {
 			return [];
 		}
-		return Meteor.users.find({_id: {$in: user.friends}});
+		const users = [...user.friends, Meteor.userId()];
+		return Meteor.users.find({_id: {$in: users}});
 	});
 	Meteor.users.deny({
 		update() { return true; }
