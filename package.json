@@ -26,6 +26,9 @@
     "redux": "^4.0.4",
     "simpl-schema": "^1.5.5"
   },
+  "engines": {
+    "node": "v8.15.1"
+  },
   "meteor": {
     "mainModule": {
       "client": "client/main.jsx",
