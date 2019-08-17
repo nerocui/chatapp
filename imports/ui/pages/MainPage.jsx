@@ -39,8 +39,8 @@ class MainPage extends React.Component {
 
 	getThreadName(thread) {
 		const {users} = thread;
-		const contacts = this.props.contacts.filter(contact => users.includes(contact._id));
-		return contacts.length > 2 ? `Group of ${contacts.length.toString()}` : `${contacts[0].first_name} ${contacts[0].last_name}`;
+		const contacts = this.props.contacts.filter(contact => users.includes(contact._id) && contact._id === this.props.user._id);
+		return contacts.length > 1 ? `Group of ${contacts.length.toString()}` : `${contacts[0].first_name} ${contacts[0].last_name}`;
 	}
 
 	render() {
@@ -79,6 +79,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
 	return {
+		user: state.auth.user,
 		threads: state.threadState.threads,
 		requests: state.requestState.requests,
 		contacts: state.contactState.contacts,

@@ -1,5 +1,5 @@
 .component--thread__input-container {
-	position: absolute;
+	position: fixed;
 	bottom: 0;
 	padding: $body-padding;
 	width: calc(100% - 2*#{$body-padding});
@@ -18,6 +18,10 @@
 		right: $body-padding;
 		bottom: $body-padding;
 	}
+}
+
+.component--thread__message-container {
+	overflow-y: auto;
 }
 
 .component--thread__chat {

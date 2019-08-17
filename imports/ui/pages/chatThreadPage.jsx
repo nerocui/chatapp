@@ -42,17 +42,20 @@ class ThreadPage extends React.Component {
 			<div className='page'>
 				<BackAppBar route='/main' label={this.props.loading ? 'loading...' : this.props.thread.name} />
 				<div className='component--page__container'>
-					{this.props.loading ? '' : this.props.messages.map(message => {
-						const messageData = Object.assign({}, message, {sender: this.getMessageSender(message.senderId)});
-						console.log('got sender, whole message data is: ', messageData);
-						return (
-							<div className='component--thread__chat'>
-								<Avatar className={`element--thread__chat-float ${messageData.sender._id === this.props.user._id ? 'right' : ''}`}>{messageData.sender.initials}</Avatar>
-								<p className={`element--thread__chat-float ${messageData.sender._id === this.props.user._id ? 'right' : ''}`}>{messageData.content}</p>
-							</div>
-							
-						);
-					})}
+					<div className='component--thread__message-container'>
+						{this.props.loading ? '' : this.props.messages.map(message => {
+							const messageData = Object.assign({}, message, {sender: this.getMessageSender(message.senderId)});
+							console.log('got sender, whole message data is: ', messageData);
+							return (
+								<div className='component--thread__chat'>
+									<Avatar className={`element--thread__chat-float ${messageData.sender._id === this.props.user._id ? 'right' : ''}`}>{messageData.sender.initials}</Avatar>
+									<p className={`element--thread__chat-float ${messageData.sender._id === this.props.user._id ? 'right' : ''}`}>{messageData.content}</p>
+								</div>
+								
+							);
+						})}
+					</div>
+					
 					<div className='component--thread__input-container'>
 						<form onSubmit={this.onMessageSubmit}>
 							<TextField
