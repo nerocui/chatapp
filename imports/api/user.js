@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { isAuthenticated } from '../util/authUtil';
+import { Threads } from './db';
 
 if (Meteor.isServer) {
 	Meteor.publish('searchUsers', (email) => {
@@ -22,6 +23,11 @@ if (Meteor.isServer) {
 		const users = [...user.friends, Meteor.userId()];
 		return Meteor.users.find({_id: {$in: users}});
 	});
+	Meteor.publish('getUserByThread', (threadId) => {
+		const thread = Threads.findOne({_id: threadId});
+		return Meteor.users.find({_id: {$in: thread.users}});
+	});
+
 	Meteor.users.deny({
 		update() { return true; }
 	});

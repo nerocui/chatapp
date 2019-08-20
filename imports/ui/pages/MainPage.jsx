@@ -32,14 +32,14 @@ class MainPage extends React.Component {
 	}
 
 	openThread(thread) {
-		this.props.chat(thread);
+		//this.props.chat(thread);
 		console.log("setting thread data: ", thread);
 		this.props.history.push(`/chatthread?threadId=${thread._id}`);
 	}
 
 	getThreadName(thread) {
 		const {users} = thread;
-		const contacts = this.props.contacts.filter(contact => users.includes(contact._id) && contact._id === this.props.user._id);
+		const contacts = this.props.contacts.filter(contact => users.includes(contact._id) && contact._id !== this.props.user._id);
 		return contacts.length > 1 ? `Group of ${contacts.length.toString()}` : `${contacts[0].first_name} ${contacts[0].last_name}`;
 	}
 

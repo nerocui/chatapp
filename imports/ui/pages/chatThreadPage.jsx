@@ -20,6 +20,7 @@ class ThreadPage extends React.Component {
 		this.onMessageChange = this.onMessageChange.bind(this);
 		this.onMessageSubmit = this.onMessageSubmit.bind(this);
 		this.getMessageSender = this.getMessageSender.bind(this);
+		this.getThreadName = this.getThreadName.bind(this);
 	}
 
 	onMessageChange(e) {
@@ -37,10 +38,28 @@ class ThreadPage extends React.Component {
 		return this.props.contacts.filter(contact => contact._id === senderId)[0];
 	}
 
+	scrollToBottom = () => {
+		this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+	}
+
+	componentDidMount() {
+		this.scrollToBottom();
+	}
+
+	componentDidUpdate() {
+		this.scrollToBottom();
+	}
+
+	getThreadName() {
+		const {users} = this.props.thread;
+		const contacts = this.props.contacts.filter(contact => users.includes(contact._id) && contact._id !== this.props.user._id);
+		return contacts.length > 1 ? `Group of ${contacts.length.toString()}` : `${contacts[0].first_name} ${contacts[0].last_name}`;
+	}
+
 	render() {
 		return (
 			<div className='page'>
-				<BackAppBar route='/main' label={this.props.loading ? 'loading...' : this.props.thread.name} />
+				<BackAppBar route='/main' label={this.props.loading ? 'loading...' : this.getThreadName()} />
 				<div className='component--page__container'>
 					<div className='component--thread__message-container'>
 						{this.props.loading ? '' : this.props.messages.map(message => {
@@ -55,7 +74,9 @@ class ThreadPage extends React.Component {
 							);
 						})}
 					</div>
-					
+					<div style={{ float:"left", clear: "both" }}
+						ref={(el) => { this.messagesEnd = el; }}>
+					</div>
 					<div className='component--thread__input-container'>
 						<form onSubmit={this.onMessageSubmit}>
 							<TextField
@@ -79,23 +100,22 @@ class ThreadPage extends React.Component {
 	}
 }
 
-function mapStateToProps(state) {
-	return {
-		user: state.auth.user,
-		contacts: state.contactState.openedThreadContacts,
-		thread: state.threadState.openedThread,
-	};
-}
-
-const ConnectedThreadPage = connect(mapStateToProps)(ThreadPage);
-
 export default withTracker(() => {
 	const threadId = queryString.parse(window.location.search).threadId;
+	const threadHandle = Meteor.subscribe('searchThreadById', threadId);
 	const messageHandle = Meteor.subscribe('messageByThread', threadId);
 	const loading = !messageHandle.ready();
+	const threadLoding = !threadHandle.ready();
+	const thread = Threads.findOne({_id: threadId});
 	const messages = Messages.find({}).fetch() || [];
+	const contactsHandle = Meteor.subscribe('getUserByThread', threadId);
+	const contactsLoading = !contactsHandle.ready();
+	const contacts = Meteor.users.find({}).fetch() || [];
 	return {
-		loading,
+		thread,
+		loading: loading || threadLoding || contactsLoading,
 		messages,
+		contacts,
+		user: Meteor.user(),
 	};
-})(ConnectedThreadPage);
+})(ThreadPage);
