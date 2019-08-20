@@ -28,12 +28,27 @@ class ContactsPage extends React.Component {
 		}
 	}
 
+	scrollToBottom = () => {
+		this.messagesEnd.scrollIntoView({behavior: 'auto'});
+	}
+
+	componentDidMount() {
+		this.scrollToBottom();
+	}
+
+	componentDidUpdate() {
+		this.scrollToBottom();
+	}
+
 	render() {
 		const contacts = this.buildContactList();
 		return (
 			<div className='page'>
 				<BackAppBar route='/main' label={this.props.loading?'Loading':'Contacts'}/>
 				<div className='component--page__container'>
+					<div style={{ float:"left", clear: "both" }}
+						ref={(el) => { this.messagesEnd = el; }}>
+					</div>
 					{this.props.loading?'':contacts.map(contact => (
 							<ContactCard {...contact} key={contact._id} onChat={() => this.chat(contact)}/>
 					))}

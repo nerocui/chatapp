@@ -54,9 +54,7 @@ class MainPage extends React.Component {
 	}
 
 	scrollToBottom = () => {
-		if (!this.props.loading) {
-			this.messagesEnd.scrollIntoView({behavior: 'auto'});
-		}
+		this.messagesEnd.scrollIntoView({behavior: 'auto'});
 	}
 
 	componentDidMount() {
@@ -76,31 +74,35 @@ class MainPage extends React.Component {
 				<AppBar openMenu={this.openSideBar} requests={requestNum}/>
 				<SideBar open={this.state.sideBarOpen} requests={requestNum} closeSideBar={this.closeSideBar} />
 				<div className='component--page__container'>
-					{this.props.loading? '' :
-					<List>
+					{this.props.loading? 
 						<div style={{ float:"left", clear: "both" }}
 							ref={(el) => { this.messagesEnd = el; }}>
-						</div>
-						{this.props.threads.map(thread => {
-							const threadData = Object.assign(
-									{},
-									thread, 
-									{name: this.getThreadName(thread), avatar: this.getAvatar(thread)}
+						</div> :
+						<List>
+							<div style={{ float:"left", clear: "both" }}
+								ref={(el) => { this.messagesEnd = el; }}>
+							</div>
+							{this.props.threads.map(thread => {
+								const threadData = Object.assign(
+										{},
+										thread, 
+										{name: this.getThreadName(thread), avatar: this.getAvatar(thread)}
+									);
+									console.log("threads: ", threadData);
+								return (
+									<ListItem button key={thread._id} onClick={() => this.openThread(threadData)}>
+										<ListItemAvatar>
+											<Avatar>{threadData.avatar}</Avatar>
+										</ListItemAvatar>
+										<ListItemText primary={threadData.name} secondary={threadData.lastMessage}/>
+										<ListItemIcon>
+											<ArrowRightIcon />
+										</ListItemIcon>
+									</ListItem>
 								);
-								console.log("threads: ", threadData);
-							return (
-								<ListItem button key={thread._id} onClick={() => this.openThread(threadData)}>
-									<ListItemAvatar>
-										<Avatar>{threadData.avatar}</Avatar>
-									</ListItemAvatar>
-									<ListItemText primary={threadData.name} secondary={threadData.lastMessage}/>
-									<ListItemIcon>
-										<ArrowRightIcon />
-									</ListItemIcon>
-								</ListItem>
-							);
-						})}
-					</List>}
+							})}
+						</List>
+					}
 				</div>
 			</div>
 		);
