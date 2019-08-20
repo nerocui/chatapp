@@ -12,10 +12,13 @@ Meteor.methods({
 		if (!isAuthenticated()) {
 			throw new Meteor.Error("Not auth");
 		}
-		return Requests.insert({
-			fromUserId: this.userId,
-			toUserId,
-		});
+		const existingRequest = Requests.findOne({fromUserId: this.userId, toUserId});
+		if (!existingRequest) {
+			return Requests.insert({
+				fromUserId: this.userId,
+				toUserId,
+			});
+		}
 	},
 	'request.approve'(_id) {
 		if (!isAuthenticated()) {

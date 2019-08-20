@@ -24,6 +24,7 @@ class SearchPage extends React.Component {
 		this.onEmailChange = this.onEmailChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 		this.renderSearchResult = this.renderSearchResult.bind(this);
+		this.onClear = this.onClear.bind(this);
 	}
 
 	onEmailChange(e) {
@@ -36,10 +37,14 @@ class SearchPage extends React.Component {
 		this.setState({search: true, email: '', term});
 	}
 
+	onClear() {
+		this.setState({term: '', search: false, email: ''});
+	}
+
 	renderSearchResult() {
 		if (this.state.search) {
 			return (
-				<SearchResult email={this.state.term} />
+				<SearchResult email={this.state.term} onClear={this.onClear}/>
 			);
 		}
 	}

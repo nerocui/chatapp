@@ -3,5 +3,6 @@
 	"name": "Youchatt",
 	"background_color": "#00cc25",
   	"display": "standalone",
-  	"theme_color": "#00cc25"
+	"theme_color": "#00cc25",
+	"start_url": "/main"
 }

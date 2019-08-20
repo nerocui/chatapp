@@ -49,6 +49,7 @@ Accounts.onCreateUser((options, user) => {
 		count += 1;
 	}
 	user.username = username;
+	user.friends = [];
 	return user;
 });
 

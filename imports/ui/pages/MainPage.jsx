@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Meteor } from 'meteor/meteor';
 import { withRouter } from 'react-router-dom';
-import { chat } from '../../action';
+import { withTracker } from "meteor/react-meteor-data";
+import { Threads, Requests } from '../../api/db';
 import AppBar from '../components/appBar';
 import SideBar from '../components/sideBar';
 import List from '@material-ui/core/List';
@@ -51,6 +53,20 @@ class MainPage extends React.Component {
 		return contacts.length > 1 ? `G${contacts.length.toString()}` : `${contacts[0].initials}`;
 	}
 
+	scrollToBottom = () => {
+		if (!this.props.loading) {
+			this.messagesEnd.scrollIntoView({behavior: 'auto'});
+		}
+	}
+
+	componentDidMount() {
+		this.scrollToBottom();
+	}
+
+	componentDidUpdate() {
+		this.scrollToBottom();
+	}
+
 	render() {
 		console.log("requests: ", this.props.requests);
 		const requestNum = this.props.requests ? this.props.requests.length : 0;
@@ -60,13 +76,18 @@ class MainPage extends React.Component {
 				<AppBar openMenu={this.openSideBar} requests={requestNum}/>
 				<SideBar open={this.state.sideBarOpen} requests={requestNum} closeSideBar={this.closeSideBar} />
 				<div className='component--page__container'>
+					{this.props.loading? '' :
 					<List>
+						<div style={{ float:"left", clear: "both" }}
+							ref={(el) => { this.messagesEnd = el; }}>
+						</div>
 						{this.props.threads.map(thread => {
 							const threadData = Object.assign(
 									{},
 									thread, 
 									{name: this.getThreadName(thread), avatar: this.getAvatar(thread)}
 								);
+								console.log("threads: ", threadData);
 							return (
 								<ListItem button key={thread._id} onClick={() => this.openThread(threadData)}>
 									<ListItemAvatar>
@@ -79,30 +100,33 @@ class MainPage extends React.Component {
 								</ListItem>
 							);
 						})}
-					</List>
+					</List>}
 				</div>
 			</div>
 		);
 	}
 }
 
-function mapDispatchToProps(dispatch) {
-	return {
-		chat: thread => dispatch(chat(thread)),
-	};
-}
 
-function mapStateToProps(state) {
-	return {
-		user: state.auth.user,
-		threads: state.threadState.threads,
-		requests: state.requestState.requests,
-		contacts: state.contactState.contacts,
-	};
-}
+const MainPageWithTracker = withTracker(() => {
+	const threadHandle = Meteor.subscribe('myThreads');
+	const requestHandle = Meteor.subscribe('requestsToMe');
+	const contactHandle = Meteor.subscribe('myFriends');
 
-const ConnectedMainPage = connect(mapStateToProps, mapDispatchToProps)(MainPage);
+	const loading = !(threadHandle.ready() && requestHandle.ready() && contactHandle.ready());
+	const threads = Threads.find({}).fetch() || [];
+	const requests = Requests.find({}).fetch() || [];
+	const contacts = Meteor.users.find({}).fetch() || [];
+
+	return {
+		loading,
+		user: Meteor.user(),
+		threads,
+		requests,
+		contacts,
+	};
+})(MainPage);
 
 export default withRouter(({ history }) => (
-	<ConnectedMainPage history={history} />
+	<MainPageWithTracker history={history} />
 ));
