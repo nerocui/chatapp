@@ -9,6 +9,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ArrowRightIcon from '@material-ui/icons/ArrowForwardIos';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
 
 
 class MainPage extends React.Component {
@@ -43,6 +45,12 @@ class MainPage extends React.Component {
 		return contacts.length > 1 ? `Group of ${contacts.length.toString()}` : `${contacts[0].first_name} ${contacts[0].last_name}`;
 	}
 
+	getAvatar(thread) {
+		const {users} = thread;
+		const contacts = this.props.contacts.filter(contact => users.includes(contact._id) && contact._id !== this.props.user._id);
+		return contacts.length > 1 ? `G${contacts.length.toString()}` : `${contacts[0].initials}`;
+	}
+
 	render() {
 		console.log("requests: ", this.props.requests);
 		const requestNum = this.props.requests ? this.props.requests.length : 0;
@@ -54,10 +62,17 @@ class MainPage extends React.Component {
 				<div className='component--page__container'>
 					<List>
 						{this.props.threads.map(thread => {
-							const threadData = Object.assign({}, thread, {name: this.getThreadName(thread)});
+							const threadData = Object.assign(
+									{},
+									thread, 
+									{name: this.getThreadName(thread), avatar: this.getAvatar(thread)}
+								);
 							return (
 								<ListItem button key={thread._id} onClick={() => this.openThread(threadData)}>
-									<ListItemText primary={threadData.name} />
+									<ListItemAvatar>
+										<Avatar>{threadData.avatar}</Avatar>
+									</ListItemAvatar>
+									<ListItemText primary={threadData.name} secondary={threadData.lastMessage}/>
 									<ListItemIcon>
 										<ArrowRightIcon />
 									</ListItemIcon>

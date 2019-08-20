@@ -24,6 +24,7 @@ Meteor.methods({
 		if (!isAuthenticated()) {
 			throw new Meteor.Error("Not auth");
 		}
+		console.log('updating last message: ', lastMessage);
 		return Threads.update({_id}, {$set: {
 			lastMessage,
 			deletedBy: [],//if new message, this needs to be seen by all users

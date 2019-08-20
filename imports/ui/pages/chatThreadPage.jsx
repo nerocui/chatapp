@@ -9,6 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import SendIcon from '@material-ui/icons/Send';
 import Avatar from '@material-ui/core/Avatar';
+import FormControl from '@material-ui/core/FormControl';
 
 
 class ThreadPage extends React.Component {
@@ -39,7 +40,7 @@ class ThreadPage extends React.Component {
 	}
 
 	scrollToBottom = () => {
-		this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+		this.messagesEnd.scrollIntoView({behavior: 'auto'});
 	}
 
 	componentDidMount() {
@@ -73,21 +74,15 @@ class ThreadPage extends React.Component {
 								
 							);
 						})}
-					</div>
-					<div style={{ float:"left", clear: "both" }}
-						ref={(el) => { this.messagesEnd = el; }}>
+						<div style={{ float:"left", clear: "both" }}
+							ref={(el) => { this.messagesEnd = el; }}>
+						</div>
 					</div>
 					<div className='component--thread__input-container'>
 						<form onSubmit={this.onMessageSubmit}>
-							<TextField
-								id="standard-bare"
-								margin="normal"
-								inputProps={{
-									autocomplete: "off",
-									form: {
-									autocomplete: "off",
-								}}}
-								value={this.state.content} onChange={this.onMessageChange}
+							<input
+								value={this.state.content}
+								onChange={this.onMessageChange}
 							/>
 							<IconButton type='submit'>
 								<SendIcon />

@@ -1,0 +1,7 @@
+{
+	"short_name": "uchat",
+	"name": "Youchatt",
+	"background_color": "#00cc25",
+  	"display": "standalone",
+  	"theme_color": "#00cc25"
+}

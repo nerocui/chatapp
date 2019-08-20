@@ -1,16 +1,24 @@
 .component--thread__input-container {
 	position: fixed;
 	bottom: 0;
+	display: block;
 	padding: $body-padding;
 	width: calc(100% - 2*#{$body-padding});
+	background-color: #FAFAFA;
 	margin: 0;
-	.MuiFormControl-root {
+	form {
 		width: calc(100% - 2*#{$body-padding} - 48px);
-		.MuiInputBase-root {
+		input {
 			width: 100%;
-			input {
-				width: 100%;
-			}
+			background-color: #FAFAFA;
+			border: 1px solid rgb(172, 172, 172);
+			border-radius: .5rem;
+			font-size: 1.2rem;
+			padding: .5rem;
+			box-shadow: 0 0 .3rem rgb(189, 189, 189);
+		}
+		input:focus, textarea:focus, select:focus{
+			outline: none;
 		}
 	}
 	button {
@@ -21,6 +29,7 @@
 }
 
 .component--thread__message-container {
+	height: calc(100% - 57px);
 	overflow-y: auto;
 }
 

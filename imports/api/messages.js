@@ -22,8 +22,8 @@ Meteor.methods({
 		}, err => {
 			errCode = err;
 		});
-		if (errCode) {
-			Meteor.call('threads.updateLastMessage', thread._id, content);
+		if (!errCode) {
+			Meteor.call('threads.updateLastMessage', threadId, content);
 		}
 		return _id;
 	},
